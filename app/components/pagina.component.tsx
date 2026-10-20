@@ -1,20 +1,21 @@
-
-import Link from "next/link";
 import { Title } from "./title.component";
+import { Menu } from "./menu.component";
+import { Calculator, House, ListTodo } from "lucide-react";
+
+const menuItems = [
+    {text: "Home", link: "/", icon: House},
+    {text: "Contador", link: "/contador", icon: Calculator},
+    {text: "Todo List", link: "/todo-list", icon: ListTodo},
+]
 
 export default function Pagina(props: any) {
-
     return (
         <div className="flex min-h-screen">
-            <aside className="bg-blue-900 p-6 w-64 flex flex-col gap-6">
+            <aside className="page-side-bar">
                 <h1 className="text-xl font-black">Logo</h1>
-                <ul>
-                    <Link href="/"><li>Início</li></Link>
-                    <Link href="/contador"><li>Contador</li></Link>
-                    <Link href="/todo-list"><li>TodoList</li></Link>
-                </ul>
+                <Menu items={menuItems}/>
             </aside>
-            <main className="bg-gray-800 p-6 flex-1 flex flex-col gap-6">
+            <main className="page-content">
                 <Title
                     main={props.titulo}
                     subtitle={props.subtitulo}

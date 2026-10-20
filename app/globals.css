@@ -46,6 +46,21 @@ body {
   .btn-success {
     @apply bg-green-700 hover:bg-green-800 text-white
   }
+
+  .menu-item {
+    @apply flex gap-2 p-2 rounded-lg hover:bg-blue-700
+  }
+
+  .page-side-bar {
+    @apply bg-blue-900 p-6 w-64 flex flex-col gap-6
+  }
+
+  .page-content {
+    @apply bg-gray-800 p-6 flex-1 flex flex-col gap-6
+  }
   
+  .counter-container {
+    @apply flex flex-col items-start gap-2
+  }
 }
 

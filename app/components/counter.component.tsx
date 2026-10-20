@@ -3,7 +3,6 @@
 import { CircleX, Dices, StepBack, StepForward } from "lucide-react"
 import { useState } from "react"
 
-// <Counter initialValue={100}/>
 
 export function Counter(props: any){
 
@@ -29,7 +28,7 @@ export function Counter(props: any){
     }
 
     return (
-        <div className="flex flex-col items-start gap-2">
+        <div className="counter-container">
             <h1 className="text-lg font-bold">{count}</h1>
             <div className="flex gap-2">
                 <button className="btn btn-primary" onClick={incrementar}>
