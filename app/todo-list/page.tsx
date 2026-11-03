@@ -49,6 +49,8 @@ export default function TodoListPage(){
             }
         })
 
+        newTodos.sort((a, b) => Number(a.completed) - Number(b.completed))
+
         setTodos(newTodos)
     }
 
