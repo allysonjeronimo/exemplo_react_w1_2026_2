@@ -1,30 +1,64 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Pagina from "../components/pagina.component";
 import { TodoForm } from "../components/todo-list/todo-form.component";
-import { TodoItem } from "../components/todo-list/todo-item.component";
 import { TodoList } from "../components/todo-list/todo-list.component";
 import { Todo } from "../components/todo-list/todo.types";
+import ServiceStorage from "../services/storage.service";
+
+const STORED_TODOS_KEY = "todos"
 
 export default function TodoListPage(){
 
     const [todos, setTodos] = useState<Todo[]>([])
-    const [nextId, setNextId] = useState(1)
+    const [isLoaded, setIsLoaded] = useState(false)
+
+    useEffect(() => {
+        // executar no momento da inicialização do componente
+
+        const storedTodos = ServiceStorage.get<Todo[]>(STORED_TODOS_KEY)
+
+        if(storedTodos){
+            setTodos(storedTodos)
+        }
+
+        setIsLoaded(true)
+
+    }, []) // dependencia externa: executar bloco novamente se houver mudanças no array
+
+
+    // Salvar lista de todos no storage
+    useEffect(() => {
+
+        if(isLoaded){
+             ServiceStorage.set<Todo[]>(STORED_TODOS_KEY, todos)
+        }
+    
+    }, [todos, isLoaded])
+
+
+    function nextId() : number{
+        return  todos.reduce((max, todo) => {
+            if(max > todo.id){
+                return max
+            }
+            return todo.id
+        }, 0) + 1
+    }
 
     function addTodo(text: string){
 
         const newTodo: Todo = {
-            id: nextId,
+            id: nextId(),
             text: text,
             completed: false
         }
  
-       setTodos(
-         [...todos, newTodo]
-       )
-
-       setNextId(nextId + 1)
+        const newTodos = [...todos, newTodo]
+        
+        sortTodos(newTodos)
+        setTodos(newTodos)
     }
 
     function onDelete(id: number){
@@ -49,9 +83,25 @@ export default function TodoListPage(){
             }
         })
 
-        newTodos.sort((a, b) => Number(a.completed) - Number(b.completed))
-
+        sortTodos(newTodos)
         setTodos(newTodos)
+    }
+
+    function sortTodos(todos: Todo[]){
+        todos.sort((a, b) => {
+
+            return Number(a.completed) - Number(b.completed)
+
+            /*if(!a.completed && b.completed){
+                return -1
+            }
+            else if(a.completed && !b.completed){
+                return 1
+            }
+            else{
+                return 0
+            }*/
+        })
     }
 
     return (
